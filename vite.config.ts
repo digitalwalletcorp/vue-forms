@@ -87,7 +87,8 @@ export default defineConfig({
         // バンドルに含めると利用側と二重になり、i18nのインスタンスやfloating-vueの設定が共有されない
         'vue-i18n',
         'floating-vue',
-        /^@digitalwalletcorp\/utils(\/.*)?$/
+        /^@digitalwalletcorp\/utils(\/.*)?$/,
+        /^@digitalwalletcorp\/vue-svg-icons(\/.*)?$/
       ],
       output: [
         { format: 'es', entryFileNames: '[name].js' },

@@ -51,12 +51,14 @@
   },
   "scripts": {
     "build": "vite build",
+    "yarn:dedupe": "npx yarn-deduplicate --strategy highest yarn.lock",
     "install:dev": "rm -rf lib dest && find node_modules -mindepth 1 -delete && yarn install",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json",
     "version:patch": "npm version patch",
     "version:minor": "npm version minor",
     "version:major": "npm version major",
     "prepack": "rm -rf lib && npm run build",
+    "catalog": "vue-tsc --noEmit -p tsconfig.catalog.json && node ../bin/build-form-catalog.mjs docs/catalog/main.ts docs/demo/index.html",
     "pack": "rm -rf dest && mkdir -p dest && npm pack --pack-destination=dest",
     "publish:npm": "bash ../bin/publish.sh",
     "test:unit": "vitest run --coverage"
@@ -84,13 +86,15 @@
     "src/**/*"
   ],
   "peerDependencies": {
-    "@digitalwalletcorp/utils": "^0.1.0",
-    "floating-vue": "^5.2.2",
+    "@digitalwalletcorp/utils": "^0.2.0",
+    "@digitalwalletcorp/vue-svg-icons": "^1.15.1",
+    "floating-vue": "^5.0.0",
     "vue": "^3.5.29",
-    "vue-i18n": "^11.4.12"
+    "vue-i18n": "^11.0.0"
   },
   "devDependencies": {
-    "@digitalwalletcorp/utils": "^0.1.0",
+    "@digitalwalletcorp/utils": "^0.2.0",
+    "@digitalwalletcorp/vue-svg-icons": "^1.15.1",
     "@nuxt/kit": "^3.17.5",
     "@types/node": "24.13.6",
     "@vitejs/plugin-vue": "^6.0.0",

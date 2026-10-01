@@ -1,0 +1,15 @@
+{
+  /* カタログ(docs/catalog)の型チェック用。モジュール本体の設定はtsconfig.jsonに置き、こちらはデモの分だけを足す */
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /* pathsは継承元と合成されず丸ごと置き換わるため、@/* も書き直す */
+    "paths": {
+      "@/*": ["./src/*"],
+      "@digitalwalletcorp/vue-forms": ["./src/index.ts"]
+    }
+  },
+  "include": [
+    "src/**/*",
+    "docs/catalog/**/*"
+  ]
+}
