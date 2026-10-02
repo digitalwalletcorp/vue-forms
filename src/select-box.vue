@@ -43,29 +43,31 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { vTooltip } from 'floating-vue';
 import { useInputError } from '@/error-observer';
 import { resolveLabel } from '@/internal/form-helper';
-import type { GroupValueLabelPair, NumberModelType, StringModelType, ValueLabelPair } from '@/types/form';
+import type { BooleanModelType, GroupValueLabelPair, NumberModelType, StringModelType, ValueLabelPair } from '@/types/form';
 
 interface Props {
   /** バリデーションルールのキー。errorObserverからこの入力のエラーを引く */
   vid?: string;
   /** バインド値 */
-  modelValue?: StringModelType | NumberModelType;
+  modelValue?: StringModelType | NumberModelType | BooleanModelType;
   /** バインド値の型。未指定の場合は'string' */
-  modelType?: 'string' | 'number';
+  modelType?: 'string' | 'number' | 'boolean';
   /** 選択肢 */
-  items?: (ValueLabelPair<StringModelType | NumberModelType> | GroupValueLabelPair<StringModelType | NumberModelType>)[];
+  items?: (ValueLabelPair<StringModelType | NumberModelType | BooleanModelType> | GroupValueLabelPair<StringModelType | NumberModelType | BooleanModelType>)[];
   /** 先頭に空白の選択肢を置かない */
   noBlank?: boolean;
   /** インデックス番号(ツールチップの添字) */
   index?: number;
 }
 const props = withDefaults(defineProps<Props>(), {
+  // modelValueの型にbooleanを含むため、未指定のときにfalseへ変換されないよう既定値を明示する
+  modelValue: undefined,
   modelType: 'string'
 });
 
 interface Emits {
-  (e: 'update:modelValue', value: StringModelType | NumberModelType): void;
-  (e: 'emit:change', value: StringModelType | NumberModelType): void;
+  (e: 'update:modelValue', value: StringModelType | NumberModelType | BooleanModelType): void;
+  (e: 'emit:change', value: StringModelType | NumberModelType | BooleanModelType): void;
 }
 const emit = defineEmits<Emits>();
 
@@ -112,16 +114,32 @@ const selectOptions = computed(() => {
 
 const onChange = (e: Event) => {
   const target = e.target as HTMLSelectElement;
-  let emitValue: StringModelType | NumberModelType = target.value;
-  if (props.modelType === 'number') {
-    if (['', 'null'].includes(emitValue)) {
-      emitValue = null;
-    } else {
-      emitValue = Number(emitValue);
-    }
-  }
+  const emitValue = toModelValue(target.value);
   emit('update:modelValue', emitValue);
   emit('emit:change', emitValue);
+};
+
+/**
+ * selectの値をmodelTypeに合わせて変換する
+ * 選択肢の値は文字列にして描画しているため、値がnullの選択肢は'null'になる
+ *
+ * @param {string} value selectの値
+ * @returns {string | number | boolean | null}
+ */
+const toModelValue = (value: string): StringModelType | NumberModelType | BooleanModelType => {
+  if (props.modelType === 'number') {
+    return ['', 'null'].includes(value) ? null : Number(value);
+  }
+  if (props.modelType === 'boolean') {
+    if (value === 'true') {
+      return true;
+    }
+    if (value === 'false') {
+      return false;
+    }
+    return null;
+  }
+  return value;
 };
 
 // optGroupを持つGroupValueLabelPairか判定するタイプガード
@@ -180,38 +198,18 @@ defineExpose({
     if (!refSelect.value) {
       return;
     }
-    let value: StringModelType | NumberModelType = refSelect.value.value;
-    if (props.modelType === 'number') {
-      if (value === '' || value === 'null') {
-        value = null;
-      } else {
-        value = Number(value);
-      }
-    }
+    const value = toModelValue(refSelect.value.value);
     emit('update:modelValue', value);
     emit('emit:change', value);
   },
   /**
    * 現在の設定値を返す
+   * SELECTエレメントが無いときは、空白の選択肢を選んだときと同じ値を返す
    *
-   * @returns {string | number | null}
+   * @returns {string | number | boolean | null}
    */
-  getCurrentValue: (): StringModelType | NumberModelType => {
-    if (!refSelect.value) {
-      if (props.modelType === 'number') {
-        return null;
-      }
-      return '';
-    }
-    let value: StringModelType | NumberModelType = refSelect.value.value;
-    if (props.modelType === 'number') {
-      if (value === '' || value === 'null') {
-        value = null;
-      } else {
-        value = Number(value);
-      }
-    }
-    return value;
+  getCurrentValue: (): StringModelType | NumberModelType | BooleanModelType => {
+    return toModelValue(refSelect.value?.value ?? '');
   }
 });
 </script>

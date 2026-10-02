@@ -8,7 +8,7 @@ export interface ValidationRule {
   /** エラー時のメッセージコード */
   code: string;
   /** バインドパラメータ */
-  bind?: any[]; // eslint-disable-line
+  bind?: any[];
   /** 条件（validを指定すると条件が正常を示すようになる） */
   condition?: 'valid' | 'invalid';
   /** ルールID */
@@ -28,7 +28,7 @@ export interface ErrorItem {
   /** エラーコード */
   code: string;
   /** バインドパラメータ */
-  bind?: any[]; // eslint-disable-line
+  bind?: any[];
   /** ルールID */
   ruleId?: string;
 }

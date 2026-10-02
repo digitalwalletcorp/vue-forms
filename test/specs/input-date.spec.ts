@@ -227,6 +227,11 @@ describe('InputDate', () => {
   });
 
   describe('picker button', () => {
+    it('wraps the button in the dropdown with its own class, so that the button is not pushed up by the line box', () => {
+      const wrapper = mountInputDate({ formatType: 'date', calendar: true });
+      expect(wrapper.find('.dwui-input-date > .dwui-input-date-dropdown > .dwui-input-date-button').exists()).toBe(true);
+    });
+
     it.each(['date', 'datetime', 'dateHourMinute', 'timestamp', 'monthDay', 'time', 'hourMinute'] as const)('is shown for %s with calendar', (formatType) => {
       expect(mountInputDate({ formatType, calendar: true }).find('.dwui-input-date-button').exists()).toBe(true);
     });

@@ -9,7 +9,6 @@ Form components for Vue 3.
 * **Validation built in**: Define rules, run `doValidate`, and inputs show their errors with a tooltip. Error messages are translated with `vue-i18n`.
 * **Memorized inputs**: `useMemorizedValue` keeps an input value such as a search condition, and restores it the next time the page is shown.
 * **Tree-shaking**: Only import what you use. Importing a single component won't bundle the rest of the library.
-* **Fully typed**: Type definitions are included, allowing your editor to auto-complete props and default values automatically.
 * **Easy overrides**: Default styles use zero specificity (`:where()`), so your own CSS always wins.
 
 #### 📦 Installation
@@ -25,10 +24,8 @@ yarn add @digitalwalletcorp/vue-forms @digitalwalletcorp/utils @digitalwalletcor
 > * **Vue 3.5.29+**: Props are typed with Vue's `ClassValue`, which is exported since Vue 3.5.29.
 > * **vue-i18n 11.0.0+**: Error messages are translated with the i18n instance of your application. Create it with `legacy: false`.
 > * **floating-vue 5.0.0+**: Error messages are shown with its tooltip, and the selection list of `MultiSelectBox` and the picker of `InputDate` with its dropdown. Load its stylesheet in your application as usual.
-> * **@digitalwalletcorp/utils 0.2.0+**: Used to format numbers.
-> * **@digitalwalletcorp/vue-svg-icons 1.15.1+**: Used for the icons in components such as `ToggleInputPassword`.
->
-> These are peer dependencies, so a single shared copy is used in your application.
+> * **@digitalwalletcorp/utils 0.2.0+**: Used as typescript libraries.
+> * **@digitalwalletcorp/vue-svg-icons 1.15.3+**: Used for the icons in components.
 
 #### 📖 Usage
 
@@ -116,19 +113,6 @@ Components are categorized into two types based on their root DOM element. Knowi
 2. **Attribute & Event Passthrough**
    - **Form Element Root:** Behaves like a native HTML form element. Any attribute (`aria-*`, `autocomplete`) or listener (`@blur`, `@keydown`) attaches directly to the input itself.
    - **Wrapped in `<div>`:** Standard attributes (like `id`, `name`, `disabled`) are passed via explicit **props**. Unrecognized attributes/listeners will land on the outer `<div>` wrapper instead of the inner `<input>`.
-3. **Overriding Error Styles (`.dwui-error`)**
-   Default styles use zero specificity (`:where()`), making custom CSS overrides effortless. However, if your global CSS styles native elements directly (e.g., `input[type='text']`), those rules might override the default `.dwui-error` styles.
-
-   To ensure error states display correctly, explicitly target the error class alongside your component styles:
-
-   ```css
-   .dwui-input-text.dwui-error,
-   .dwui-text-area.dwui-error {
-     border-color: var(--border-color-form-error);
-     background: var(--background-form-error);
-     color: var(--color-text-form-error);
-   }
-   ```
 
 #### ✅ Validation
 
@@ -240,15 +224,16 @@ Components automatically adapt to your application's color-scheme (supporting bo
 
 - **Follow OS Setting:** Add `:root { color-scheme: light dark; }` to your global CSS.
 - **Custom Theme Switching:** Change the CSS `color-scheme` property on `:root` or a parent container (e.g., `color-scheme: dark`). The components and native form controls will switch automatically.
+- **No Theme Switching:** If you don't specify `color-scheme`, the components will be displayed in light mode.
 
 **🛠️ Customizing Styles (`--dwui-*` Variables)**
 
-Default styles use CSS variables (`--dwui-*`) and zero-specificity selectors (`:where()`), making them easy to override.
+Default styles use CSS variables (`--dwui-*`) and zero-specificity selectors (`:where()`), making them easy to override. The variables of each component are listed in its document.
 
-We recommend creating a `vue-forms-variables.css` file to map your application's design tokens to the library's `--dwui-*` variables, and importing it after the library stylesheet.
+We recommend creating a `dwui-variables.css` file to map your application's design tokens to the library's `--dwui-*` variables, and importing it after the library stylesheet. If you use both `vue-forms` and `vue-core`, you can use a single `dwui-variables.css` file for both libraries, as they share common variables like those for focus rings.
 
 ```css
-/* vue-forms-variables.css */
+/* dwui-variables.css */
 :root {
   --dwui-background-form-error: var(--background-form-error);
   --dwui-border-color-form-error: var(--border-color-form-error);
@@ -261,16 +246,6 @@ We recommend creating a `vue-forms-variables.css` file to map your application's
 
 > 💡 **Component-Specific Notes:**
 > * Dropdown Colors: To customize dropdown panel colors (`InputDate` and `MultiSelectBox`), override their `--dwui-*` CSS variables rather than targeting internal dropdown classes directly.
-> * Error State Styles (`.dwui-error`): If your global CSS targets native elements directly (e.g., `input[type='text']`), those rules may override the library's zero-specificity error styles. In that case, explicitly re-apply error styles with `.dwui-error`
-
-```css
-.dwui-input-text.dwui-error,
-.dwui-text-area.dwui-error {
-  border-color: var(--border-color-form-error);
-  background: var(--background-form-error);
-  color: var(--color-text-form-error);
-}
-```
 
 #### 💾 Memorizing Values
 

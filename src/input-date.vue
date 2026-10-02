@@ -28,6 +28,7 @@
     >
     <Dropdown
       v-if="showCalendar"
+      class="dwui-input-date-dropdown"
       :shown="showDatePicker"
       :triggers="[]"
       placement="bottom-start"
@@ -740,11 +741,16 @@ defineExpose({
   color: var(--dwui-color-text-form-error, light-dark(#000000, #ffe3ea));
 }
 
+/* ドロップダウンはボタンを行の高さの箱で包むため、flexにしてボタンの高さに合わせる。blockのままだとアイコンが上に寄る */
+:where(.dwui-input-date-dropdown) {
+  display: flex;
+}
+
 /* ボタンはアイコンだけを見せる */
 :where(.dwui-input-date-button) {
   display: inline-flex;
   align-items: center;
-  margin-left: 4px;
+  margin: 0 4px;
   padding: 0;
   border: none;
   background: none;
