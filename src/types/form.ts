@@ -10,7 +10,7 @@ export type BooleanModelType = boolean | null;
 export type LabelText = string | (() => string);
 
 /** ラベル/バリューペア */
-export type ValueLabelPair<V = any, L = LabelText> = { // eslint-disable-line
+export type ValueLabelPair<V = any, L = LabelText> = {
   value: V;
   label: L;
   disabled?: boolean;
@@ -18,7 +18,7 @@ export type ValueLabelPair<V = any, L = LabelText> = { // eslint-disable-line
   optGroup?: string;
   children?: ValueLabelPair<V, L>[];
 };
-export type GroupValueLabelPair<V = any, L = LabelText> = { // eslint-disable-line
+export type GroupValueLabelPair<V = any, L = LabelText> = {
   optGroup: string;
   children: ValueLabelPair<V, L>[];
   disabled?: boolean;

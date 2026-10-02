@@ -51,6 +51,7 @@ function resolveScope(instance: ComponentInternalInstance): string {
   const names: (string | undefined)[] = [];
   for (let current: ComponentInternalInstance | null = instance; current != null; current = current.parent) {
     const type = current.type as { __name?: string; name?: string };
+    // eslint-disable-next-line no-underscore-dangle
     names.push(type.__name ?? type.name);
   }
   return `${routePath}|${names.join('<')}`;
@@ -72,6 +73,7 @@ function resolveScope(instance: ComponentInternalInstance): string {
 export function useMemorizedValue<T>(key: string, source: Ref<T>): void {
   const instance = getCurrentInstance();
   if (!instance) {
+    // eslint-disable-next-line no-console
     console.warn('[vue-forms] useMemorizedValue must be called in setup. The value is not memorized.');
     return;
   }
