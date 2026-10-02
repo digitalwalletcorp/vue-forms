@@ -150,6 +150,11 @@ defineExpose({
   display: inline-block;
 }
 
+/* ブラウザ既定のbaselineではボタンが文字より上に寄るため、ボタンと文字の中心を揃える */
+:where(.dwui-input-check-box > label > input, .dwui-input-check-box > label > span) {
+  vertical-align: middle;
+}
+
 /* チェックボックスとラベルの間隔。gapはflex専用のためmarginで空ける */
 :where(.dwui-input-check-box > label > span) {
   margin-left: var(--dwui-gap-input-check-box, 2px);

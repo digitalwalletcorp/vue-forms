@@ -46,8 +46,8 @@ const currencies: ValueLabelPair<string>[] = [
 
 | Prop         | Type                                          | Description |
 | ------------ | --------------------------------------------- | ----------- |
-| `modelValue` | `string \| number \| null`                    | The bound value. When it is `null`, the option whose value is `''` or `null` is selected. |
-| `modelType`  | `'string' \| 'number'`                        | The type of the bound value. Defaults to `'string'`. With `'number'`, the selected value is bound as a number, and the blank option or an option whose value is `''`, `null`, or `'null'` as `null`. |
+| `modelValue` | `string \| number \| boolean \| null`         | The bound value. When it is `null`, the option whose value is `''` or `null` is selected. |
+| `modelType`  | `'string' \| 'number' \| 'boolean'`           | The type of the bound value. Defaults to `'string'`. With `'number'`, the selected value is bound as a number, and the blank option or an option whose value is `''`, `null`, or `'null'` as `null`. With `'boolean'`, an option whose value is `true` or `false` is bound as a boolean, and the other options, including the blank option, as `null`. |
 | `items`      | `(ValueLabelPair \| GroupValueLabelPair)[]`   | The options. See [Items](#items). |
 | `noBlank`    | `boolean`                                     | Does not place the blank option first. |
 | `vid`        | `string`                                      | The key of the validation rules. The errors of this key are shown on this select. |
@@ -55,33 +55,33 @@ const currencies: ValueLabelPair<string>[] = [
 
 ##### 📣 Events
 
-| Event               | Payload                    | Description |
-| ------------------- | -------------------------- | ----------- |
-| `update:modelValue` | `string \| number \| null` | Emitted when the selection changes. |
-| `emit:change`       | `string \| number \| null` | Emitted right after `update:modelValue`, with the same value. |
+| Event               | Payload                               | Description |
+| ------------------- | ------------------------------------- | ----------- |
+| `update:modelValue` | `string \| number \| boolean \| null` | Emitted when the selection changes. |
+| `emit:change`       | `string \| number \| boolean \| null` | Emitted right after `update:modelValue`, with the same value. |
 
 > 💡 The native `change` event of the `<select>` also reaches the root and can be listened to with `@change`, but it gives a DOM `Event`. Listen to `emit:change` to receive the value.
 
 ##### 🛠️ Exposed Methods
 
-| Method            | Returns                    | Description |
-| ----------------- | -------------------------- | ----------- |
-| `getInstance`     | `HTMLSelectElement`        | Returns the select element. |
-| `setFocus`        | `void`                     | Focuses the select. |
-| `setCurrent`      | `void`                     | Selects the option for the current `modelValue` again. Use it when a `null` value is not reflected. |
-| `fireChange`      | `void`                     | Emits `update:modelValue` and `emit:change` with the selected value, converted by `modelType`. |
-| `getCurrentValue` | `string \| number \| null` | Returns the selected value, converted by `modelType`. |
+| Method            | Returns                               | Description |
+| ----------------- | ------------------------------------- | ----------- |
+| `getInstance`     | `HTMLSelectElement`                   | Returns the select element. |
+| `setFocus`        | `void`                                | Focuses the select. |
+| `setCurrent`      | `void`                                | Selects the option for the current `modelValue` again. Use it when a `null` value is not reflected. |
+| `fireChange`      | `void`                                | Emits `update:modelValue` and `emit:change` with the selected value, converted by `modelType`. |
+| `getCurrentValue` | `string \| number \| boolean \| null` | Returns the selected value, converted by `modelType`. |
 
 ##### Items
 
-| Property   | Type                       | Description |
-| ---------- | -------------------------- | ----------- |
-| `value`    | `string \| number \| null` | The value of the option. |
-| `label`    | `LabelText`                | The label of the option: a string, or a function that returns a string. |
-| `disabled` | `boolean`                  | Makes the option unselectable. |
-| `visible`  | `boolean`                  | Hides the option when `false`. |
-| `optGroup` | `string`                   | Makes the item a group with this label (`GroupValueLabelPair`). Its options are given by `children`. |
-| `children` | `ValueLabelPair[]`         | The options of the group. |
+| Property   | Type                                  | Description |
+| ---------- | ------------------------------------- | ----------- |
+| `value`    | `string \| number \| boolean \| null` | The value of the option. |
+| `label`    | `LabelText`                           | The label of the option: a string, or a function that returns a string. |
+| `disabled` | `boolean`                             | Makes the option unselectable. |
+| `visible`  | `boolean`                             | Hides the option when `false`. |
+| `optGroup` | `string`                              | Makes the item a group with this label (`GroupValueLabelPair`). Its options are given by `children`. |
+| `children` | `ValueLabelPair[]`                    | The options of the group. |
 
 ##### 🎨 Styling
 

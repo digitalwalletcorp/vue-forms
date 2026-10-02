@@ -276,10 +276,10 @@
   dependencies:
     big.js "7.0.1"
 
-"@digitalwalletcorp/vue-svg-icons@^1.15.1":
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/@digitalwalletcorp/vue-svg-icons/-/vue-svg-icons-1.15.2.tgz#14a263f3a2d4177480b767aa83b166a1c2c06ad0"
-  integrity sha512-2D/cqXcVJQMXei1huwNjm5kQmxV4P9RPHOpFk1jwWb9zV26YIi8d3R1tNq4mE+CxlraMS7sfi6jBb86yLUNY8w==
+"@digitalwalletcorp/vue-svg-icons@^1.15.3":
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/@digitalwalletcorp/vue-svg-icons/-/vue-svg-icons-1.15.3.tgz#d12349381db727c3259e8250d6b6456216c49d2a"
+  integrity sha512-EagQa0NC6JlYpelAoKNaBjife8JqKlj8+oMB346MJZmpqVxIc+777Pyd8vRiDVXEpvq2UTKP58CpFesl9a6sGA==
 
 "@dxup/nuxt@^0.5.6":
   version "0.5.10"

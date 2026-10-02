@@ -4,6 +4,7 @@ export type AllowType = 'number' | 'ascii' | 'decimal' | 'alpha' | 'alphanum';
 // Formのモデルが動的に変わる場合の型定義(SelectBoxなど)
 export type StringModelType = string;
 export type NumberModelType = number | null;
+export type BooleanModelType = boolean | null;
 
 /** 選択肢などのラベル。言語の切り替えに追従させる場合は文字列を返す関数で渡す */
 export type LabelText = string | (() => string);

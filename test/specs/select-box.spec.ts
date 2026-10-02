@@ -112,6 +112,23 @@ describe('SelectBox', () => {
       expect(wrapper.find('optgroup').attributes('label')).toBe('Fruits');
       expect(wrapper.findAll('optgroup > option').map(option => option.text())).toEqual(['Apple']);
     });
+
+    it('selects the blank option when modelValue is not given', () => {
+      const wrapper = mountSelectBox({
+        items: [
+          {
+            value: true,
+            label: 'Yes'
+          },
+          {
+            value: false,
+            label: 'No'
+          }
+        ],
+        modelType: 'boolean'
+      });
+      expect((wrapper.element as HTMLSelectElement).selectedIndex).toBe(0);
+    });
   });
 
   describe('change', () => {
@@ -134,6 +151,27 @@ describe('SelectBox', () => {
       await wrapper.find('select').setValue('');
       expect(wrapper.emitted('update:modelValue')).toEqual([[1], [null]]);
       expect(wrapper.emitted('emit:change')).toEqual([[1], [null]]);
+    });
+
+    it('emits a boolean, and null for the blank option, with modelType boolean', async () => {
+      const wrapper = mountSelectBox({
+        items: [
+          {
+            value: true,
+            label: 'Yes'
+          },
+          {
+            value: false,
+            label: 'No'
+          }
+        ],
+        modelType: 'boolean'
+      });
+      await wrapper.find('select').setValue('true');
+      await wrapper.find('select').setValue('false');
+      await wrapper.find('select').setValue('');
+      expect(wrapper.emitted('update:modelValue')).toEqual([[true], [false], [null]]);
+      expect(wrapper.emitted('emit:change')).toEqual([[true], [false], [null]]);
     });
   });
 
@@ -169,6 +207,34 @@ describe('SelectBox', () => {
       await nextTick();
       expect((wrapper.element as HTMLSelectElement).selectedIndex).toBe(1);
     });
+
+    it('selects the option for a boolean modelValue, and the option whose value is null for null', async () => {
+      const wrapper = mountSelectBox({
+        items: [
+          {
+            value: null,
+            label: 'Both'
+          },
+          {
+            value: true,
+            label: 'Yes'
+          },
+          {
+            value: false,
+            label: 'No'
+          }
+        ],
+        modelType: 'boolean',
+        modelValue: false,
+        noBlank: true
+      });
+      expect((wrapper.element as HTMLSelectElement).selectedIndex).toBe(2);
+      await wrapper.setProps({ modelValue: true });
+      expect((wrapper.element as HTMLSelectElement).selectedIndex).toBe(1);
+      await wrapper.setProps({ modelValue: null });
+      await nextTick();
+      expect((wrapper.element as HTMLSelectElement).selectedIndex).toBe(0);
+    });
   });
 
   describe('error state', () => {
@@ -194,6 +260,24 @@ describe('SelectBox', () => {
         modelValue: 2
       });
       expect(wrapper.vm.getCurrentValue()).toBe(2);
+    });
+
+    it('getCurrentValue returns a boolean with modelType boolean', () => {
+      const wrapper = mountSelectBox({
+        items: [
+          {
+            value: true,
+            label: 'Yes'
+          },
+          {
+            value: false,
+            label: 'No'
+          }
+        ],
+        modelType: 'boolean',
+        modelValue: false
+      });
+      expect(wrapper.vm.getCurrentValue()).toBe(false);
     });
 
     it('fireChange emits the selected value', () => {

@@ -126,13 +126,36 @@ describe('InputRadio', () => {
       });
       expect(radio(wrapper).checked).toBe(true);
     });
+
+    it('compares a boolean modelValue as a string', () => {
+      const wrapper = mountInputRadio({
+        item: {
+          value: 'false',
+          label: 'No'
+        },
+        modelValue: false,
+        modelType: 'boolean'
+      });
+      expect(radio(wrapper).checked).toBe(true);
+    });
+
+    it('is not checked when modelValue is not given', () => {
+      const wrapper = mountInputRadio({
+        item: {
+          value: 'false',
+          label: 'No'
+        },
+        modelType: 'boolean'
+      });
+      expect(radio(wrapper).checked).toBe(false);
+    });
   });
 
   describe('group', () => {
     it('keeps only the clicked radio checked in a group bound with v-model', async () => {
       const Group = defineComponent({
         setup: () => {
-          const selected = ref<string | number | null>('apple');
+          const selected = ref<string | number | boolean | null>('apple');
           return () => ['apple', 'banana'].map(value => h(InputRadio, {
             'item': {
               value,
@@ -140,7 +163,7 @@ describe('InputRadio', () => {
             },
             'name': 'fruit',
             'modelValue': selected.value,
-            'onUpdate:modelValue': (newValue: string | number | null) => {
+            'onUpdate:modelValue': (newValue: string | number | boolean | null) => {
               selected.value = newValue;
             }
           }));
@@ -177,6 +200,18 @@ describe('InputRadio', () => {
       await wrapper.find('input').setValue(true);
       expect(wrapper.emitted('update:modelValue')).toEqual([[2]]);
     });
+
+    it('emits a boolean with modelType boolean', async () => {
+      const wrapper = mountInputRadio({
+        item: {
+          value: 'false',
+          label: 'No'
+        },
+        modelType: 'boolean'
+      });
+      await wrapper.find('input').setValue(true);
+      expect(wrapper.emitted('update:modelValue')).toEqual([[false]]);
+    });
   });
 
   describe('error state', () => {
@@ -204,6 +239,17 @@ describe('InputRadio', () => {
         modelType: 'number'
       });
       expect(wrapper.vm.getCurrentValue()).toBe(3);
+    });
+
+    it('getCurrentValue returns a boolean with modelType boolean', () => {
+      const wrapper = mountInputRadio({
+        item: {
+          value: 'true',
+          label: 'Yes'
+        },
+        modelType: 'boolean'
+      });
+      expect(wrapper.vm.getCurrentValue()).toBe(true);
     });
 
     it('fireChange emits the item value', () => {

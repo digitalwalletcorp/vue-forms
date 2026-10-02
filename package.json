@@ -1,6 +1,6 @@
 {
   "name": "@digitalwalletcorp/vue-forms",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Form components for Vue 3",
   "main": "lib/index.cjs",
@@ -87,14 +87,14 @@
   ],
   "peerDependencies": {
     "@digitalwalletcorp/utils": "^0.2.0",
-    "@digitalwalletcorp/vue-svg-icons": "^1.15.1",
+    "@digitalwalletcorp/vue-svg-icons": "^1.15.3",
     "floating-vue": "^5.0.0",
     "vue": "^3.5.29",
     "vue-i18n": "^11.0.0"
   },
   "devDependencies": {
     "@digitalwalletcorp/utils": "^0.2.0",
-    "@digitalwalletcorp/vue-svg-icons": "^1.15.1",
+    "@digitalwalletcorp/vue-svg-icons": "^1.15.3",
     "@nuxt/kit": "^3.17.5",
     "@types/node": "24.13.6",
     "@vitejs/plugin-vue": "^6.0.0",
